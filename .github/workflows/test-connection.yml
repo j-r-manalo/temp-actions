@@ -1,8 +1,10 @@
 name: Basic Reusable Workflow Test
 
 on:
-  workflow_dispatch:  # Just manual trigger for testing
+  workflow_dispatch:
 
 jobs:
   test-reusable-workflow:
+    permissions:
+      contents: read     # Ensure the workflow can be read from a private repo
     uses: j-r-manalo/temp-reuesable/.github/workflows/simple-reusable.yml@main
