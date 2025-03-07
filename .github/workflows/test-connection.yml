@@ -1,0 +1,8 @@
+name: Basic Reusable Workflow Test
+
+on:
+  workflow_dispatch:  # Just manual trigger for testing
+
+jobs:
+  test-reusable-workflow:
+    uses: j-r-manalo/temp-reuesable/.github/workflows/simple-reusable.yml@main
