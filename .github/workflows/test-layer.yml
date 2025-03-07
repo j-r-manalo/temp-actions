@@ -1,0 +1,30 @@
+name: Beta Lambda Layers Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      force-rebuild:
+        description: 'Force rebuild layers'
+        type: boolean
+        default: false
+  push:
+    branches: [main]
+    paths:
+      - 'terraform_modules/verifyplus_pipeline/layers/python/Dockerfile'
+      - 'terraform_modules/demand_pipeline/layers/python/Dockerfile'
+      - 'terraform_modules/orchestrator/layers/python/Dockerfile'
+
+jobs:
+  build-beta-layers:
+    uses: precedentai/github-actions-itc/.github/workflows/reusable-lambda-layer.yml@initial-set-up
+    with:
+      environment: beta
+      force-rebuild: ${{ inputs.force-rebuild || false }}
+      layer-directories: '["terraform_modules/verifyplus_pipeline/layers/python", "terraform_modules/demand_pipeline/layers/python", "terraform_modules/orchestrator/layers/python"]'
+      demand-bucket: invoice-transactions-beta-lambda-layer-bucket
+      verifyplus-bucket: invoice-transactions-beta-verifyplus-lambda-layer-bucket
+      orchestrator-bucket: invoice-transactions-beta-orchestrator-lambda-bucket
+    secrets:
+      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
